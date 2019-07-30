@@ -1,5 +1,7 @@
 <template>
-    
+    <div class="air">
+        这是飞机
+    </div>
 </template>
 
 <script>
