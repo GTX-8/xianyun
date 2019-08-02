@@ -18,17 +18,17 @@
         <!-- 登录 用户信息 -->
         <!-- 登录 -->
         <div class="login">
-          <div v-if="power">
+          <div v-if="this.$store.state.user.userInfo.token">
             <el-dropdown>
               <span class="el-dropdown-link">
                 <div class="hole"></div>
                 <img src="http://157.122.54.189:9095/assets/images/avatar.jpg" alt />
-                <em>大帅比</em>
+                <em>{{$store.state.user.userInfo.user.nickname}}</em>
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>个人中心</el-dropdown-item>
-                <el-dropdown-item>退出</el-dropdown-item>
+                <el-dropdown-item @click.native='quiet'>退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -43,10 +43,14 @@
 
 <script>
 export default {
-  data() {
-    return {
-      power: true
-    };
+  methods:{
+    quiet(){
+      this.$router.push("/")
+      this.$store.commit('user/clearUserInfo')
+    }
+  },
+  mounted(){
+    console.log(this)
   }
 };
 </script>
