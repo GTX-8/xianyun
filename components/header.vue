@@ -93,7 +93,7 @@ export default {
     .nuxt-link-exact-active {
       background: #409eff;
       color: #fff;
-      &hover {
+      &:hover {
         color: #fff;
       }
     }
