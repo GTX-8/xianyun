@@ -12,7 +12,8 @@
         <!-- 航班信息 -->
         <div>
           <!-- flightsData.flights是后台返回的机票列表 -->
-          <FlightsItem v-for="(item, index) in dataList" :key="index" :data="item" />
+          <FlightsItem v-for="(item, index) in dataList" :key="index" :data="item" 
+          v-show="(pageIndex-1)*pageSize<=index&&index<pageIndex*pageSize" />
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -60,7 +61,7 @@ export default {
       // 当前页数
       pageIndex: 1,
       // 显示的条数
-      pageSize: 2,
+      pageSize: 6,
       // 总条数
       total: 0
     };
@@ -85,44 +86,48 @@ export default {
       // 修改分页条数
       this.pageSize = value;
       // 获取分页的数据
-      this.getDataList();
+      // this.getDataList();
     },
     // 切换页数时候触发
     handleCurrentChange(value) {
       // 修改页数
       this.pageIndex = value;
       // 获取分页的数据
-      this.getDataList();
+      // this.getDataList();
     },
     // 获取分页的数据
-    getDataList() {
-      // 修改dataList的数据 //0 | 2 //2 | 4
-      this.dataList = this.flightsData.flights.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        (this.pageIndex - 1) * this.pageSize + this.pageSize
-      );
-    },
+    // getDataList() {
+    //   // 修改dataList的数据 //0 | 2 //2 | 4
+    //   this.dataList = this.flightsData.flights
+    //   // slice
+    //   // (
+    //   //   (this.pageIndex - 1) * this.pageSize,
+    //   //   (this.pageIndex - 1) * this.pageSize + this.pageSize
+    //   // );
+    // },
      //设置dataList的数据
     setDataList(arr) {
       //如果有条件删选出来显示在页面上并默认从第一页显示
-      console.log(arr)
       if (arr) {
         this.pageIndex = 1;
         this.flightsData.flights = arr;
         this.total = arr.length;
       }
       //删选结束后每页显示的数据
-      this.dataList = this.flightsData.flights.slice(
-        (this.pageIndex - 1) * this.pageSize, 
-        (this.pageIndex - 1) * this.pageSize+this.pageSize)
-    },
+      console.log(this.dataList)
+      this.dataList = this.flightsData.flights
+    //   (
+    //     (this.pageIndex - 1) * this.pageSize, 
+    //     (this.pageIndex - 1) * this.pageSize+this.pageSize)
+    // },
     //获取航班总数据
+    },
     getData() {
       this.$axios({
         url: "airs",
         params: this.$route.query
       }).then(res => {
-        console.log(res)
+        this.dataList = res.data.flights
         this.flightsData = res.data;
         //缓存一份新的数据列表数据,这个列表不会被修改
         //flightsData会被修改
@@ -130,7 +135,7 @@ export default {
         // 获取总条数
         this.total = this.flightsData.flights.length;
         //切割出当前页面要显示的数据
-        this.dataList = this.flightsData.flights.slice(0,2)
+        // this.dataList = this.flightsData.flights.slice(0,2)
 
       });
     }
@@ -138,7 +143,7 @@ export default {
   mounted() {
     this.getData()
   }
-};
+}
 </script>
 
  <style scoped lang="less">

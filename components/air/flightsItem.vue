@@ -28,7 +28,8 @@
         </el-col>
       </el-row>
     </div>
-    <div class="flight-recommend" v-if="isShow">
+    <transition enter-active-class="animated zoomInDown" leave-active-class="animated zoomOutDown"> 
+      <div class="flight-recommend" v-show="isShow">
       <!-- 隐藏的座位信息列表 -->
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="4">低价推荐</el-col>
@@ -47,13 +48,14 @@
             </el-col>
             <el-col :span="5" class="price">￥{{ item.org_settle_price }}</el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">选定</el-button>
+              <el-button type="warning" size="mini" @click="handleToLink(data.id,item.seat_xid)">选定</el-button>
               <p>剩余：{{ item.discount }}</p>
             </el-col>
           </el-row>
         </el-col>
       </el-row>
     </div>
+    </transition>
   </div>
 </template>
 
@@ -74,7 +76,20 @@ export default {
       default: {} // 如果调用组件时候不传该属性，会取这个默认值
     }
   },
+  methods:{
+    handleToLink(id,seat_xid){
+      this.$router.push({
+        path:'/air/order',
+        query:{
+          id,
+          seat_xid
+        }
+      })
+    }
+  },
+
   computed: {
+    
     // 计算相隔时间
     rankTime() {
       const arr = this.data.arr_time.split(":"); // 到达时间的数组
